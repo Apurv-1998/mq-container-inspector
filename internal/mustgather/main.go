@@ -62,9 +62,10 @@ func MustGather(cfg *rest.Config, flags utils.MustGatherFlags) error {
 	if pod, err := validations.ValidatePodName(coreClient, flags.PodName, flags.QueueManagerNamespace); err != nil {
 		return err
 	} else if pod != nil {
-		if !flags.PodDiscovery {
-			if labelValue, exists := pod.ObjectMeta.Labels["app.kubernetes.io/instance"]; exists {
-				flags.QueueManagerName = labelValue
+		if labelValue, exists := pod.ObjectMeta.Labels["app.kubernetes.io/instance"]; exists {
+			flags.QueueManagerName = labelValue
+
+			if !flags.PodDiscovery {
 				flags.PodName = ""
 			}
 		}
